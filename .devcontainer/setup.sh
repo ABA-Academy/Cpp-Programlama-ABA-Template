@@ -61,16 +61,25 @@ if git push origin main 2>&1 | tee /tmp/push.log; then
     echo "Test sonuclari getiriliyor..."
     echo ""
     
-    if gh run view --log 2>/dev/null | grep -A 20 "Test 1"; then
+    TEST_OUTPUT=$(gh run view --log 2>/dev/null)
+    
+    if [ $? -eq 0 ]; then
+        # Test basligi
+        echo "=========================================="
+        
+        # Sadece test satirlarini goster
+        echo "$TEST_OUTPUT" | grep -E "(BASARILI|BASARISIZ|Beklenen|ciktiniz)" | head -20
+        
         echo ""
         echo "=========================================="
         echo ""
-        echo "Detayli sonuc icin:"
-        echo "  Repository -> Actions -> Son workflow"
+        echo "Tum detaylar icin:"
+        echo "  gh run view --log"
+        echo "  veya Repository -> Actions"
     else
         echo "Test sonuclari henuz hazir degil."
         echo ""
-        echo "1-2 dakika sonra tekrar deneyin:"
+        echo "1-2 dakika sonra sunu calistirin:"
         echo "  gh run view --log"
     fi
 
