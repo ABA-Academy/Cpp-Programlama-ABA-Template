@@ -57,8 +57,17 @@ if git push origin main 2>&1 | tee /tmp/push.log; then
     echo ""
     
     # Test sonuclarini goster
-    gh run view --log 2>/dev/null || echo "Test sonuclari henuz hazir degil. 1-2 dakika sonra tekrar deneyin"
-    
+    if gh run view --log 2>/dev/null; then
+        echo ""
+    else
+        echo "Test sonuclari henuz hazir degil."
+        echo ""
+        echo "Manuel kontrol icin:"
+        echo "  gh run view --log"
+        echo ""
+        echo "Web'de gormek icin:"
+        echo "  Repository -> Actions sekmesi"
+    fi    
 else
     echo ""
     echo "HATA: Gonderim basarisiz!"
