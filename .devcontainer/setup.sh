@@ -51,41 +51,53 @@ if git push origin main 2>&1 | tee /tmp/push.log; then
     echo "KOD GONDERILDI!"
     echo ""
     echo "=========================================="
-    echo "TESTLER CALISIYOR (60 saniye bekleyin)"
+    echo "TESTLER CALISIYOR..."
     echo "=========================================="
     echo ""
     
-    # 60 saniye bekle
-    for i in {60..1}; do
-        printf "\rBekleniyor: %2d saniye..." $i
-        sleep 1
-    done
-    echo ""
+    # Test tamamlanana kadar bekle (max 2 dakika)
+    echo "Test sonuclari bekleniyor (max 2 dakika)..."
     echo ""
     
-    echo "=========================================="
-    echo "TEST SONUCLARI:"
-    echo "=========================================="
-    echo ""
+    WAITED=0
+    MAX_WAIT=120
     
-    # Test sonuclarini goster
-    TEST_OUTPUT=$(gh run view --log 2>/dev/null)
-    
-    if [ $? -eq 0 ]; then
-        # Sadece test satirlarini goster
-        echo "$TEST_OUTPUT" | grep -E "(BASARILI|BASARISIZ|Beklenen|ciktiniz)" | head -20
+    while [ $WAITED -lt $MAX_WAIT ]; do
+        sleep 5
+        WAITED=$((WAITED + 5))
         
+        # Test tamamlandi mi kontrol et
+        if gh run view --log &>/dev/null; then
+            echo ""
+            echo "=========================================="
+            echo "TEST SONUCLARI:"
+            echo "=========================================="
+            echo ""
+            
+            # Test sonuclarini goster
+            gh run view --log 2>/dev/null | grep -E "(BASARILI|BASARISIZ|Beklenen|ciktiniz)" | head -20
+            
+            echo ""
+            echo "=========================================="
+            echo ""
+            echo "Tum detaylar icin:"
+            echo "  gh run view --log"
+            echo "  veya Repository -> Actions"
+            
+            break
+        fi
+        
+        printf "\rBekleniyor: %d saniye..." $WAITED
+    done
+    
+    if [ $WAITED -ge $MAX_WAIT ]; then
         echo ""
-        echo "=========================================="
         echo ""
-        echo "Tum detaylar icin:"
+        echo "Test sonuclari henuz hazir degil (2 dakika asti)."
+        echo ""
+        echo "Manuel kontrol icin:"
         echo "  gh run view --log"
-        echo "  veya Repository -> Actions"
-    else
-        echo "Test sonuclari henuz hazir degil."
-        echo ""
-        echo "1-2 dakika sonra sunu calistirin:"
-        echo "  gh run view --log"
+        echo "  veya Repository -> Actions sekmesi"
     fi
     
 else
