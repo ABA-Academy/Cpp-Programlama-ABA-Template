@@ -1,0 +1,85 @@
+name: Soru 2 - İki Sayının Toplamı Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: İki Sayının Toplamı Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - Pozitif Sayılar (5 + 3 = 8)
+      run: |
+        echo "5
+        3" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+
+        if [ "$result" = "8" ]; then
+          echo "✅ Test 1 BAŞARILI: 5 + 3 = 8"
+        else
+          echo "❌ Test 1 BAŞARISIZ"
+          echo "Beklenen: 8"
+          echo "Çıktınız: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - Negatif Sayı (-10 + 7 = -3)
+      run: |
+        echo "-10
+        7" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+
+        if [ "$result" = "-3" ]; then
+          echo "✅ Test 2 BAŞARILI: -10 + 7 = -3"
+        else
+          echo "❌ Test 2 BAŞARISIZ"
+          echo "Beklenen: -3"
+          echo "Çıktınız: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - Büyük Sayılar (100 + 200 = 300)
+      run: |
+        echo "100
+        200" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+
+        if [ "$result" = "300" ]; then
+          echo "✅ Test 3 BAŞARILI: 100 + 200 = 300"
+        else
+          echo "❌ Test 3 BAŞARISIZ"
+          echo "Beklenen: 300"
+          echo "Çıktınız: $result"
+          exit 1
+        fi
+
+    - name: Test 4 - Sıfır ile Toplama (0 + 42 = 42)
+      run: |
+        echo "0
+        42" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+
+        if [ "$result" = "42" ]; then
+          echo "✅ Test 4 BAŞARILI: 0 + 42 = 42"
+        else
+          echo "❌ Test 4 BAŞARISIZ"
+          echo "Beklenen: 42"
+          echo "Çıktınız: $result"
+          exit 1
+        fi
+
+    - name: Tüm Testler Başarılı
+      run: |
+        echo ""
+        echo "🎉 TEBRİKLER! Tüm testleri geçtiniz!"
+        echo "✅ 4/4 test başarılı"

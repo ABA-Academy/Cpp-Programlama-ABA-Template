@@ -1,0 +1,66 @@
+name: Soru 3 - Çift/Tek Kontrolü Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Çift/Tek Kontrolü Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - Çift Sayı (4)
+      run: |
+        echo "4" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Cift" ]; then
+          echo "✅ Test 1 BAŞARILI"
+        else
+          echo "❌ Beklenen: Cift, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - Tek Sayı (7)
+      run: |
+        echo "7" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Tek" ]; then
+          echo "✅ Test 2 BAŞARILI"
+        else
+          echo "❌ Beklenen: Tek, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - Sıfır
+      run: |
+        echo "0" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Cift" ]; then
+          echo "✅ Test 3 BAŞARILI"
+        else
+          echo "❌ Beklenen: Cift, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 4 - Negatif Tek (-3)
+      run: |
+        echo "-3" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Tek" ]; then
+          echo "✅ Test 4 BAŞARILI"
+        else
+          echo "❌ Beklenen: Tek, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

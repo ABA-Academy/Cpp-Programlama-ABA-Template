@@ -1,0 +1,44 @@
+name: Soru 1 - Hello World Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Hello World Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Çalıştır ve Test Et
+      run: |
+        ./program > output.txt
+
+        echo "📋 Programınızın çıktısı:"
+        cat output.txt
+        echo ""
+
+        if grep -Fxq "Hello, World!" output.txt; then
+          echo "✅ TEST BAŞARILI: Hello, World! doğru yazdırıldı"
+          echo "🎉 Tebrikler! İlk C++ programınızı başarıyla tamamladınız!"
+          exit 0
+        else
+          echo "❌ TEST BAŞARISIZ"
+          echo ""
+          echo "Beklenen çıktı:"
+          echo "Hello, World!"
+          echo ""
+          echo "Sizin çıktınız:"
+          cat output.txt
+          echo ""
+          echo "💡 İpucu: Tam olarak 'Hello, World!' yazmalısınız (büyük/küçük harf önemli)"
+          exit 1
+        fi

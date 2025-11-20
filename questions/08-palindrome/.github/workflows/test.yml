@@ -1,0 +1,66 @@
+name: Soru 8 - Palindrome Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Palindrome Kontrolü Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - kayak (Palindrome)
+      run: |
+        echo "kayak" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Palindrome" ]; then
+          echo "✅ Test 1 BAŞARILI"
+        else
+          echo "❌ Beklenen: Palindrome, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - merhaba (Değil)
+      run: |
+        echo "merhaba" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "PalindromeDegil" ]; then
+          echo "✅ Test 2 BAŞARILI"
+        else
+          echo "❌ Beklenen: Palindrome Degil, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - ada (Palindrome)
+      run: |
+        echo "ada" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Palindrome" ]; then
+          echo "✅ Test 3 BAŞARILI"
+        else
+          echo "❌ Beklenen: Palindrome, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 4 - a (Palindrome)
+      run: |
+        echo "a" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Palindrome" ]; then
+          echo "✅ Test 4 BAŞARILI"
+        else
+          echo "❌ Beklenen: Palindrome, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

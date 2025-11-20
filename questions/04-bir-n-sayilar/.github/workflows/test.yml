@@ -1,0 +1,64 @@
+name: Soru 4 - 1'den N'e Sayılar Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: 1'den N'e Sayılar Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - N=5
+      run: |
+        echo "5" | ./program > output.txt
+        expected="1
+        2
+        3
+        4
+        5"
+        if diff -w <(echo "$expected") output.txt; then
+          echo "✅ Test 1 BAŞARILI"
+        else
+          echo "❌ Test 1 BAŞARISIZ"
+          echo "Beklenen:"
+          echo "$expected"
+          echo "Çıktınız:"
+          cat output.txt
+          exit 1
+        fi
+
+    - name: Test 2 - N=3
+      run: |
+        echo "3" | ./program > output.txt
+        expected="1
+        2
+        3"
+        if diff -w <(echo "$expected") output.txt; then
+          echo "✅ Test 2 BAŞARILI"
+        else
+          echo "❌ Test 2 BAŞARISIZ"
+          exit 1
+        fi
+
+    - name: Test 3 - N=1
+      run: |
+        echo "1" | ./program > output.txt
+        if diff -w <(echo "1") output.txt; then
+          echo "✅ Test 3 BAŞARILI"
+        else
+          echo "❌ Test 3 BAŞARISIZ"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

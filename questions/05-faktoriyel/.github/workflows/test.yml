@@ -1,0 +1,66 @@
+name: Soru 5 - Faktöriyel Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Faktöriyel Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - 5! = 120
+      run: |
+        echo "5" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "120" ]; then
+          echo "✅ Test 1 BAŞARILI: 5! = 120"
+        else
+          echo "❌ Beklenen: 120, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - 0! = 1
+      run: |
+        echo "0" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "1" ]; then
+          echo "✅ Test 2 BAŞARILI: 0! = 1"
+        else
+          echo "❌ Beklenen: 1, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - 3! = 6
+      run: |
+        echo "3" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "6" ]; then
+          echo "✅ Test 3 BAŞARILI: 3! = 6"
+        else
+          echo "❌ Beklenen: 6, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 4 - 10! = 3628800
+      run: |
+        echo "10" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "3628800" ]; then
+          echo "✅ Test 4 BAŞARILI: 10! = 3628800"
+        else
+          echo "❌ Beklenen: 3628800, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

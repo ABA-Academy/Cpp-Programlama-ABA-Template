@@ -1,0 +1,24 @@
+[
+  {
+    "slug": "carpim-tablosu",
+    "title": "Çarpım Tablosu",
+    "difficulty": "⭐⭐ Orta",
+    "description": "Kullanıcıdan bir sayı alın ve o sayının çarpım tablosunu (1'den 10'a kadar) yazdırın.",
+    "requirements": "1. Kullanıcıdan bir tam sayı N alın\n2. N × 1'den N × 10'a kadar çarpım sonuçlarını yazdırın\n3. Her satır 'N x i = sonuç' formatında olmalı",
+    "examples": "### Örnek 1\n**Girdi:** `5`\n**Çıktı:**\n```\n5 x 1 = 5\n5 x 2 = 10\n5 x 3 = 15\n...\n5 x 10 = 50\n```",
+    "hints": "- For döngüsü kullanın (1'den 10'a kadar)\n- Her iterasyonda çarpma işlemi yapın\n- cout ile formatlı yazdırın",
+    "hint_comment": "For döngüsü ile 1'den 10'a kadar çarpın",
+    "test_steps": "    - name: Test 1 - 5 Çarpım Tablosu\n      run: |\n        echo \"5\" | ./program > output.txt\n        if grep -q \"5 x 10 = 50\" output.txt; then\n          echo \"✅ Test BAŞARILI\"\n        else\n          echo \"❌ Test BAŞARISIZ\"\n          exit 1\n        fi"
+  },
+  {
+    "slug": "ucgen-cizimi",
+    "title": "Yıldız Üçgeni",
+    "difficulty": "⭐⭐ Orta",
+    "description": "Kullanıcıdan bir sayı N alın ve N satırlık yıldız üçgeni çizin.",
+    "requirements": "1. Kullanıcıdan pozitif bir tam sayı N alın\n2. N satırdan oluşan yıldız üçgeni çizin\n3. Her satırda sırasıyla 1, 2, 3, ..., N adet yıldız olmalı",
+    "examples": "### Örnek 1\n**Girdi:** `4`\n**Çıktı:**\n```\n*\n**\n***\n****\n```",
+    "hints": "- İç içe döngü kullanın\n- Dış döngü satırlar için\n- İç döngü her satırdaki yıldızlar için",
+    "hint_comment": "İç içe for döngüsü kullanın",
+    "test_steps": "    - name: Test 1 - 4 Satır Üçgen\n      run: |\n        echo \"4\" | ./program > output.txt\n        lines=$(wc -l < output.txt)\n        if [ $lines -eq 4 ]; then\n          echo \"✅ Test BAŞARILI\"\n        else\n          exit 1\n        fi"
+  }
+]

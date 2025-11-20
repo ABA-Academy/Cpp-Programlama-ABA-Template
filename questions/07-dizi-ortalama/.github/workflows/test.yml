@@ -1,0 +1,67 @@
+name: Soru 7 - Dizi Ortalaması Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Dizi Ortalaması Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - Ortalama 30.00
+      run: |
+        echo "5
+        10
+        20
+        30
+        40
+        50" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "30.00" ]; then
+          echo "✅ Test 1 BAŞARILI: Ortalama = 30.00"
+        else
+          echo "❌ Beklenen: 30.00, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - Ortalama 10.00
+      run: |
+        echo "3
+        5
+        10
+        15" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "10.00" ]; then
+          echo "✅ Test 2 BAŞARILI: Ortalama = 10.00"
+        else
+          echo "❌ Beklenen: 10.00, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - Ortalama 2.50
+      run: |
+        echo "4
+        1
+        2
+        3
+        4" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "2.50" ]; then
+          echo "✅ Test 3 BAŞARILI: Ortalama = 2.50"
+        else
+          echo "❌ Beklenen: 2.50, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

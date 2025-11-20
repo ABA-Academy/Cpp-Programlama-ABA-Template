@@ -1,0 +1,64 @@
+name: Soru 6 - En Büyük Sayı Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: En Büyük Sayı Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - Pozitif Sayılar
+      run: |
+        echo "5
+        12
+        45
+        23
+        67
+        34" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "67" ]; then
+          echo "✅ Test 1 BAŞARILI: En büyük = 67"
+        else
+          echo "❌ Beklenen: 67, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - Negatif Sayılar
+      run: |
+        echo "3
+        -5
+        -2
+        -10" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "-2" ]; then
+          echo "✅ Test 2 BAŞARILI: En büyük = -2"
+        else
+          echo "❌ Beklenen: -2, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - Tek Sayı
+      run: |
+        echo "1
+        42" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "42" ]; then
+          echo "✅ Test 3 BAŞARILI: En büyük = 42"
+        else
+          echo "❌ Beklenen: 42, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

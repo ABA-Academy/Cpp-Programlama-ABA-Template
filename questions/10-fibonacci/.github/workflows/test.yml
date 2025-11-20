@@ -1,0 +1,76 @@
+name: Soru 10 - Fibonacci Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Fibonacci Dizisi Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - İlk 7 Fibonacci
+      run: |
+        echo "7" | ./program > output.txt
+        expected="0 1 1 2 3 5 8"
+        result=$(cat output.txt | tr -s '[:space:]' ' ' | xargs)
+
+        if [ "$result" = "$expected" ]; then
+          echo "✅ Test 1 BAŞARILI: $expected"
+        else
+          echo "❌ Test 1 BAŞARISIZ"
+          echo "Beklenen: $expected"
+          echo "Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - İlk 5 Fibonacci
+      run: |
+        echo "5" | ./program > output.txt
+        expected="0 1 1 2 3"
+        result=$(cat output.txt | tr -s '[:space:]' ' ' | xargs)
+
+        if [ "$result" = "$expected" ]; then
+          echo "✅ Test 2 BAŞARILI: $expected"
+        else
+          echo "❌ Beklenen: $expected, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - İlk 1 Fibonacci
+      run: |
+        echo "1" | ./program > output.txt
+        expected="0"
+        result=$(cat output.txt | tr -s '[:space:]' ' ' | xargs)
+
+        if [ "$result" = "$expected" ]; then
+          echo "✅ Test 3 BAŞARILI: $expected"
+        else
+          echo "❌ Beklenen: $expected, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 4 - İlk 10 Fibonacci
+      run: |
+        echo "10" | ./program > output.txt
+        expected="0 1 1 2 3 5 8 13 21 34"
+        result=$(cat output.txt | tr -s '[:space:]' ' ' | xargs)
+
+        if [ "$result" = "$expected" ]; then
+          echo "✅ Test 4 BAŞARILI: $expected"
+        else
+          echo "❌ Beklenen: $expected, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"

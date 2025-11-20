@@ -1,0 +1,77 @@
+name: Soru 9 - Asal Sayı Test
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Asal Sayı Testi
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Derle
+      run: |
+        g++ -std=c++17 -o program main.cpp
+        echo "✅ Derleme başarılı"
+
+    - name: Test 1 - 7 (Asal)
+      run: |
+        echo "7" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Asal" ]; then
+          echo "✅ Test 1 BAŞARILI: 7 asal"
+        else
+          echo "❌ Beklenen: Asal, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 2 - 10 (Asal Değil)
+      run: |
+        echo "10" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "AsalDegil" ]; then
+          echo "✅ Test 2 BAŞARILI: 10 asal değil"
+        else
+          echo "❌ Beklenen: Asal Degil, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 3 - 1 (Asal Değil)
+      run: |
+        echo "1" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "AsalDegil" ]; then
+          echo "✅ Test 3 BAŞARILI: 1 asal değil"
+        else
+          echo "❌ Beklenen: Asal Degil, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 4 - 2 (Asal)
+      run: |
+        echo "2" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Asal" ]; then
+          echo "✅ Test 4 BAŞARILI: 2 asal"
+        else
+          echo "❌ Beklenen: Asal, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Test 5 - 97 (Asal)
+      run: |
+        echo "97" | ./program > output.txt
+        result=$(cat output.txt | tr -d '[:space:]')
+        if [ "$result" = "Asal" ]; then
+          echo "✅ Test 5 BAŞARILI: 97 asal"
+        else
+          echo "❌ Beklenen: Asal, Çıktı: $result"
+          exit 1
+        fi
+
+    - name: Sonuç
+      run: echo "🎉 Tüm testler başarılı!"
